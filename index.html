@@ -1,0 +1,257 @@
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+
+    <link rel="stylesheet" href="style.css">
+
+     <!-- 공유버튼 삽입(1) Go to www.addthis.com/dashboard to customize your tools 
+     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60dd67a796437ff6"></script>
+     -->
+
+  </head>
+
+
+    <body>
+      <!-- NavBar -->
+      <nav class="navbar navbar-expand-lg navbar-light nav-distance">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"> 스타일 검색 </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Help</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 제목 및 소개 -->
+      <section class="section">
+        <h1 class="title">인공지능 스타일 검색</h1>
+        <h3 class="subtitle">내가 올린 사진속 옷을 다른 사람들은 어떻게 입을까?</h3>
+      </section>
+
+      <!--
+      <section class="youtube">
+        <div class = "youtube-cover"><a href="" class="youtube-link">유튜브 영상</a><img src="" alt="" class="youtube-icon"></div>
+      </section>
+      -->
+
+
+        <!-- 이미지 업로드 -->
+       
+        <div class="file-upload">
+          <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+        
+          <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+            <div class="drag-text">
+              <h3>Drag and drop a file or select add Image</h3>
+            </div>
+          </div>
+          <div class="file-upload-content">
+            <img class="file-upload-image" id="fruit-image" src="#" alt="your image" />
+            <div class="image-title-wrap">
+              <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+            </div>
+            
+            <!--스피너 추가-->
+
+            <!--구글 검색 이미지들을 ai로 분별하여서 결과가 옷에 해당되는 것들만 이미지들로 표현되게 하는 코드 추가할 예정-->
+            <p class="result"></p>
+            <div id="webcam-container" style = "background-color: pink; padding: 5px;"></div>
+            <div id="label-container" style = "background-color: pink; padding: 5px;"></div>
+          </div>
+        </div>
+
+        <!--
+        <div class="pt-5 image-title-wrap">
+          <button type="button p-2" onclick="window.location.reload()" class="try-again-btn">
+            <span class="try-again-text">다른 사진으로 재시도</span>
+          </button>
+        </div>
+        -->
+
+
+        <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script>
+            function readURL(input) {
+           if (input.files && input.files[0]) {
+         
+             var reader = new FileReader();
+         
+             reader.onload = function(e) {
+               $('.image-upload-wrap').hide();
+         
+               $('.file-upload-image').attr('src', e.target.result);
+               $('.file-upload-content').show();
+         
+               $('.image-title').html(input.files[0].name);
+             };
+         
+             reader.readAsDataURL(input.files[0]);
+             
+             init().then(function(){ /*티쳐블 머신 시작*/
+               console.log("hello");
+               predict();  /*올라온 사진을 가지고 예측 수행 */
+             });  
+
+             
+
+           } else {
+             removeUpload();
+           }
+         }
+         
+         function removeUpload() {
+           $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+           $('.file-upload-content').hide();
+           $('.image-upload-wrap').show();
+         }
+         $('.image-upload-wrap').bind('dragover', function () {
+                 $('.image-upload-wrap').addClass('image-dropping');
+             });
+             $('.image-upload-wrap').bind('dragleave', function () {
+                 $('.image-upload-wrap').removeClass('image-dropping');
+         });
+       </script>
+      
+
+         <!-- 티쳐블 머신 모델 삽입-->
+       
+
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <!--
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        -->
+
+
+
+       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+       <script type="text/javascript">
+           // More API functions here:
+           // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+       
+           // the link to your model provided by Teachable Machine export panel
+           const URL = "https://teachablemachine.withgoogle.com/models/2GYwGuMDa/";
+       
+           let model, webcam, labelContainer, maxPredictions;
+       
+           // Load the image model and setup the webcam
+           async function init() {
+               const modelURL = URL + "model.json";
+               const metadataURL = URL + "metadata.json";
+       
+               // load the model and metadata
+               // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+               // or files from your local hard drive
+               // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+               model = await tmImage.load(modelURL, metadataURL);
+               maxPredictions = model.getTotalClasses();
+               labelContainer = document.getElementById("label-container");
+               for (let i = 0; i < maxPredictions; i++) { // and class labels
+                   labelContainer.appendChild(document.createElement("div"));
+               }
+           }
+       
+      
+           // run the webcam image through the image model
+           async function predict() {
+               // predict can take in an image, video or canvas html element
+               var image = document.getElementById("fruit-image");
+               const prediction = await model.predict(image,false);
+
+               /*예측값에 따라 정렬함! */
+               prediction.sort((a,b)=>parseFloat(b.probability)-parseFloat(a.probability));
+               console.log(prediction[0].className);
+               var result;
+               switch(prediction[0].className){
+                  case "apple":
+                    result = "사과";
+                    break;
+                  case "banana":
+                    result = "바나나";
+                    break;
+                  default:
+                    result = "알수없음";
+               }
+               $('.result').html(result); /*html에서 class가 result인 곳에 result라는 값을 넣어줌*/
+
+               for (let i = 0; i < maxPredictions; i++) {
+                   const classPrediction =
+                       prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                   labelContainer.childNodes[i].innerHTML = classPrediction;
+               }
+           }
+       </script>
+  
+     
+  
+
+  
+       <!-- 댓글 창 추가
+
+      <div id="disqus_thread"></div>
+      <script>
+          /**
+          *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+          *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+          /*
+          var disqus_config = function () {
+          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+          };
+          */
+          (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://styleai.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      -->
+
+
+      
+         
+          <!--공유 버튼 삽입(2) Go to www.addthis.com/dashboard to customize your tools 
+                <div class="addthis_inline_share_toolbox"></div>
+                -->
+      
+             
+    </body>
+ <!--   Copyright (c) 2021 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+</html>
