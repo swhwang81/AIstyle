@@ -156,6 +156,8 @@ body {
 
   }
 
+
+
   @media screen and (max-width: 600px){
     html {
       font-size: 10px;
@@ -164,6 +166,9 @@ body {
       font-size: 2rem;
     }
     .file-upload{
+      width: 70%;
+    }
+    .imgOut{
       width: 70%;
     }
   }

@@ -6,6 +6,9 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <title>Hello, world!</title>
 
@@ -73,14 +76,20 @@
               <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
             </div>
             
-            <!--스피너 추가-->
-
+            
             <!--구글 검색 이미지들을 ai로 분별하여서 결과가 옷에 해당되는 것들만 이미지들로 표현되게 하는 코드 추가할 예정-->
+            
+           <div id="label-container"></div>
+            
             <p class="result"></p>
-            <div id="webcam-container" style = "background-color: pink; padding: 5px;"></div>
-            <div id="label-container" style = "background-color: pink; padding: 5px;"></div>
-          </div>
-        </div>
+
+             <!--스피너 추가-->
+          <div class="spinner-border text-info" id="spinner"></div>
+
+          <img class="resultImg" src="img/temp.jpg"/>
+            
+          <div id = "imgOut"></div>
+          
 
         <!--
         <div class="pt-5 image-title-wrap">
@@ -108,9 +117,12 @@
              };
          
              reader.readAsDataURL(input.files[0]);
+
+             $('#spinner').show()
              
              init().then(function(){ /*티쳐블 머신 시작*/
-               console.log("hello");
+               //console.log("hello");
+              
                predict();  /*올라온 사진을 가지고 예측 수행 */
              });  
 
@@ -156,7 +168,7 @@
            // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
        
            // the link to your model provided by Teachable Machine export panel
-           const URL = "https://teachablemachine.withgoogle.com/models/2GYwGuMDa/";
+           const URL = "https://teachablemachine.withgoogle.com/models/tH9Rk1IYg/";
        
            let model, webcam, labelContainer, maxPredictions;
        
@@ -180,31 +192,59 @@
       
            // run the webcam image through the image model
            async function predict() {
+              
                // predict can take in an image, video or canvas html element
-               var image = document.getElementById("fruit-image");
+               var image = document.getElementById("fruit-image");  //fruit-image : 파일 업로드한 사진
                const prediction = await model.predict(image,false);
 
                /*예측값에 따라 정렬함! */
                prediction.sort((a,b)=>parseFloat(b.probability)-parseFloat(a.probability));
                console.log(prediction[0].className);
                var result;
+               var resultImg;
+               /*
                switch(prediction[0].className){
                   case "apple":
                     result = "사과";
+                    resultImg ="img/apple/1.jpg"
                     break;
                   case "banana":
                     result = "바나나";
+                    resultImg ="img/banana/1.jpg"
                     break;
                   default:
                     result = "알수없음";
+               }*/
+              result = prediction[0].className
+              $('.result').html(result); /*html에서 class가 result인 곳에 result라는 값을 넣어줌*/
+            
+              console.log(function(){
+                for (let i = 0; i < maxPredictions; i++) {
+                  prediction[i].className
                }
-               $('.result').html(result); /*html에서 class가 result인 곳에 result라는 값을 넣어줌*/
-
+              })
+               /*
                for (let i = 0; i < maxPredictions; i++) {
                    const classPrediction =
                        prediction[i].className + ": " + prediction[i].probability.toFixed(2);
                    labelContainer.childNodes[i].innerHTML = classPrediction;
-               }
+               }*/
+               
+
+               imgTag = 'img/'+prediction[0].className+'/';
+               //console.log(imgTag);
+
+               for(i = 0 ; i<8; i++ ){
+                  var img = document.createElement("img");
+                  img.src =imgTag+(i+1)+'.jpg';
+                  img.width = 400;
+                  img.height =350;
+                  img.padding = 5;
+                  document.body.appendChild(img) ; 
+                  imgOut.innerHTML = img;
+            }
+            
+            $('#spinner').hide()
            }
        </script>
   
