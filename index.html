@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    
     <title>Hello, world!</title>
 
     <link rel="stylesheet" href="style.css">
@@ -52,13 +52,6 @@
         <h3 class="subtitle">내가 올린 사진속 옷을 다른 사람들은 어떻게 입을까?</h3>
       </section>
 
-      <!--
-      <section class="youtube">
-        <div class = "youtube-cover"><a href="" class="youtube-link">유튜브 영상</a><img src="" alt="" class="youtube-icon"></div>
-      </section>
-      -->
-
-
         <!-- 이미지 업로드 -->
        
         <div class="file-upload">
@@ -73,7 +66,7 @@
           <div class="file-upload-content">
             <img class="file-upload-image" id="fruit-image" src="#" alt="your image" />
             <div class="image-title-wrap">
-              <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+              <button type="button" onclick="removeUpload()" class="remove-image"  data-toggle="tooltip" data-placement="right" title="다시 검색 클릭!">Remove <span class="image-title">Uploaded Image</span></button>
             </div>
             
             
@@ -81,24 +74,13 @@
             
            <div id="label-container"></div>
             
-            <p class="result"></p>
+            <p class="result" data-toggle="tooltip" data-placement="right" title="이미지 로딩중!"></p>
 
              <!--스피너 추가-->
           <div class="spinner-border text-info" id="spinner"></div>
-
-          <img class="resultImg" src="img/temp.jpg"/>
             
           <div id = "imgOut"></div>
-          
-
-        <!--
-        <div class="pt-5 image-title-wrap">
-          <button type="button p-2" onclick="window.location.reload()" class="try-again-btn">
-            <span class="try-again-text">다른 사진으로 재시도</span>
-          </button>
-        </div>
-        -->
-
+       
 
         <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script>
@@ -137,6 +119,9 @@
            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
            $('.file-upload-content').hide();
            $('.image-upload-wrap').show();
+           $('.imgload').remove();
+           $('.describeImg').remove();
+           $('.result').hide();
          }
          $('.image-upload-wrap').bind('dragover', function () {
                  $('.image-upload-wrap').addClass('image-dropping');
@@ -192,7 +177,6 @@
       
            // run the webcam image through the image model
            async function predict() {
-              
                // predict can take in an image, video or canvas html element
                var image = document.getElementById("fruit-image");  //fruit-image : 파일 업로드한 사진
                const prediction = await model.predict(image,false);
@@ -202,49 +186,47 @@
                console.log(prediction[0].className);
                var result;
                var resultImg;
-               /*
-               switch(prediction[0].className){
-                  case "apple":
-                    result = "사과";
-                    resultImg ="img/apple/1.jpg"
-                    break;
-                  case "banana":
-                    result = "바나나";
-                    resultImg ="img/banana/1.jpg"
-                    break;
-                  default:
-                    result = "알수없음";
-               }*/
-              result = prediction[0].className
+            
+              result = prediction[0].className;
+              result = result.replace("_"," ");
+              $('.result').show();
               $('.result').html(result); /*html에서 class가 result인 곳에 result라는 값을 넣어줌*/
             
+              /*
               console.log(function(){
                 for (let i = 0; i < maxPredictions; i++) {
-                  prediction[i].className
+                  prediction[i].className;
                }
-              })
-               /*
-               for (let i = 0; i < maxPredictions; i++) {
-                   const classPrediction =
-                       prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                   labelContainer.childNodes[i].innerHTML = classPrediction;
-               }*/
-               
+              })*/
+
+              
+
+              
 
                imgTag = 'img/'+prediction[0].className+'/';
-               //console.log(imgTag);
-
-               for(i = 0 ; i<8; i++ ){
-                  var img = document.createElement("img");
-                  img.src =imgTag+(i+1)+'.jpg';
-                  img.width = 400;
-                  img.height =350;
-                  img.padding = 5;
-                  document.body.appendChild(img) ; 
-                  imgOut.innerHTML = img;
-            }
-            
-            $('#spinner').hide()
+               
+               var imgParent = document.getElementById("imgOut");
+               for(i = 0 ; i<10; i++ ){
+                  //a 태그 생성
+                  anode = document.createElement("a");
+                  anode.href ="#";
+                  imgParent.appendChild(anode);
+                  // 이미지 태그 생성
+                  imgnode = document.createElement("img");
+                  imgnode.src =imgTag+(i+1)+'.jpg';
+                  imgnode.width = 400;
+                  imgnode.height =350;
+                  imgnode.className = "imgload";
+                  anode.appendChild(imgnode);
+                  //이미지 설명 태그 생성
+                 // desnode = document.createElement("div");
+                 // desnode.className ="describeImg";
+                 // desnode.width = 400;
+                 // desnode.height = 50;
+                 // desnode.innerHTML ="이미지 설명";
+                 // imgParent.appendChild(desnode);
+               }
+            $('#spinner').hide();
            }
        </script>
   
