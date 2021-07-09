@@ -1,0 +1,25 @@
+
+<html>
+  <head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+ 
+  <body>
+   
+    <a href="#" onclick="document.querySelector('article').innerHTML='<h2>HTML</h2>Html is ...'">html</a>
+
+    <article>
+
+    </article>
+
+     <input type="button" value="fetch" onclick="
+     fetch('CSS').then(function(response){
+       response.text().then(function(text){
+         //alert(text);
+         document.querySelector('article').innerHTML = text;
+      })
+     })
+     ">
+ </body>
+  </html>
