@@ -14,6 +14,12 @@
     <title>Hello, world!</title>
 
     <link rel="stylesheet" href="style.css">
+    <style>
+      .ai_result{
+          background-color: forestgreen;
+          color:white;
+      }
+    </style>
 
      <!-- 공유버튼 삽입(1) Go to www.addthis.com/dashboard to customize your tools 
      <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60dd67a796437ff6"></script>
@@ -194,7 +200,7 @@
               result = prediction[0].className;
               result = result.replace("_"," ");
               $('.result').show();
-              $('.result').html('<br><br><h1>인식결과: '+result+'</h1>'); /*html에서 class가 result인 곳에 result라는 값을 넣어줌*/
+              $('.result').html('<br><br><h1 class="ai_result">'+result+'</h1>'); /*html에서 class가 result인 곳에 result라는 값을 넣어줌*/
             
               /*
               console.log(function(){
